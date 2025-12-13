@@ -12,37 +12,35 @@
 
 */
 
-let objJuego;
-//let fondoImg = [];
-let estado = 0;
 
-function preload() {
-//  fondoImg [0] = loadImage(".jpg");
-}   
+let objJuego;
+let estado = 0;
 
 function setup() {
   createCanvas(640, 480);
-  objJuego = new Juego(); 
+  objJuego = new Juego();
 }
-
 
 function draw() {
   noCursor();
   objJuego.dibujar();
 }
 
-
 function keyPressed(){
   if (estado === 0 && keyCode === ENTER){
-  estado = 1;
-}
-
-  objJuego.teclaPresionada(keyCode); 
+    estado = 1;
+    return;
+  }
+  if (estado === 1 && keyCode === ENTER){
+    estado = 2;
+    return;
+  }
+  objJuego.teclaPresionada(keyCode);
 }
 
 function mousePressed(){
-  if (estado == 4 || estado == 5){
-    objJuego.reinicioJuego();
+  if (estado === 6 || estado === 7){
+    objJuego.reiniciar();
     estado = 0;
   }
 }
