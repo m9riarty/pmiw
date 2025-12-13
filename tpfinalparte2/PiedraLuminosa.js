@@ -2,14 +2,13 @@
 
 class PiedraLuminosa{
   constructor(){
-    this.posX = 500;
-    this.posY = 240;
-    this.miColor = color (0, 200, 255);
+    this.posX = width - 80;
+    this.posY = 320;
+    this.img = piedra;
   }
-  
+
   dibujar(){
-  fill(this.miColor);
-  ellipse(this.posX, this.posY, 50, 50);
+    imageMode(CENTER);
+    image(this.img, this.posX, this.posY, 80, 80);
   }
-  
 }

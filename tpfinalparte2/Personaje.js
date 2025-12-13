@@ -1,45 +1,61 @@
 class Personaje{
-  constructor(posX, posY){
-    this.posX = posX;
-    this.posY = posY;
-    this.miColor = color (0, 0, 255);
+  constructor(x, y){
+    this.posX = x;
+    this.posY = y;
+    this.estado = "normal";
+    this.frame = 0;
+    this.sprites = jugador;
+    this.spriteSalto = salto;
+    this.suelo = y;
   }
-  
-  dibujar(){
-    fill(this.miColor);
-    ellipse(this.posX, this.posY, 50, 50);
-  }
-  
-  teclaPresionada(keyCode){
-    if(keyCode == LEFT_ARROW){
-      this.moverIzquierda();
-    } else if(keyCode == RIGHT_ARROW){
-      this.moverDerecha();
-    } else if(keyCode == UP_ARROW){
-      this.saltoPJ();
-    } else if(keyCode == DOWN_ARROW){
-    this.agacharPJ();
+
+  actualizar(){
+    if (this.estado === "salta"){
+      this.posY += 8;
+      if (this.posY >= this.suelo){
+        this.posY = this.suelo;
+        this.estado = "normal";
+      }
+    }
+
+    if (this.estado === "normal"){
+      this.frame = 0;
     }
   }
-  
-  moverDerecha(){
-    this.posX += 60;
-  }
-  
-  moverIzquierda(){
-    this.posX -= 60;
+
+  dibujar(){
+    imageMode(CENTER);
+
+    if (this.estado === "salta"){
+      image(this.spriteSalto, this.posX, this.posY, 120, 160);
+    } else {
+      image(this.sprites[this.frame | 0], this.posX, this.posY, 120, 160);
+    }
   }
 
-  saltoPJ(){
-    this.posY -= 30;
+  teclaPresionada(keyCode){
+    if (keyCode === RIGHT_ARROW){
+      this.estado = "camina";
+      this.posX += 60;
+      this.frame += 0.25;
+      if (this.frame >= this.sprites.length){
+        this.frame = 1;
+      }
+    }
+
+    if (keyCode === LEFT_ARROW){
+      this.estado = "camina";
+      this.posX -= 60;
+      if (this.posX < 40) this.posX = 40;
+    }
+
+    if (keyCode === UP_ARROW && this.estado !== "salta"){
+      this.estado = "salta";
+      this.posY -= 90;
+    }
   }
 
-  agacharPJ(){
-    this.posY += 10;
-  }
-  
   toca(piedra){
-  let d = dist(this.posX, this.posY, piedra.posX, piedra.posY);
-  return d < 50;
+    return dist(this.posX, this.posY, piedra.posX, piedra.posY) < 50;
   }
 }
